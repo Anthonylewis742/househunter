@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			#pictures {
+				display: inline-block,
+			}
+			</style>
+	</head>
+	<body>
+		<div id="pictures">
+			<img src = new google.maps.StreetViewService().getPanoramaByLocation("la Sagrada Familia", 50, getStreetView); width="500" height="500" alt="" title="" />
+			<img src = new google.maps.StreetViewService().getPanoramaByLocation("la Sagrada Familia", 50, getStreetView); width="500" height="500" alt="" title="" />
+		</div>
+		
+		<script>
+		function getStreetView(data, status) {
+			if (status == google.maps.StreetViewStatus.OK) {
+				var nearStreetViewLocation = "la Sagrada Familia";
+				var heading = google.maps.geometry.spherical.computeHeading(
+					nearStreetViewLocation, "la Sagrada Familia");
+				var panoramaOptions = {
+					position: nearStreetViewLocation,
+						pov: {
+							heading: heading,
+							pitch: 10
+						}
+					};
+				var panorama = new google.maps.StreetViewPanorama(
+				document.getElementById('pano'), panoramaOptions);
+			} else {
+				infowindow.setContent('<div>' + marker.title + '</div>' + 
+				'<div>No Street View Found</div>');
+			}
+		}
+		</script>
+	</body>
+</html>

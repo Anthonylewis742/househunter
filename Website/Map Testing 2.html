@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>House Hunter | Find Your Dream Home</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="HouseHunter | Excel Solutions, Macros, Automation, Reporting and Charting" />
+<meta name="keywords" content="Real Estate, Home, Mortgage, Buy, Rent, Ontario, House, Houses, Apartment, Condo" />
+<meta name="author" content="Austrada" />
+<!-- This is needed for IE -->
+<link rel="shortcut icon" href="images/HHWebTabIcon.ico" type="image/ico"  />
+<link rel="stylesheet" href="stylesheets/style.css">
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGUfCtzq6ScbQJA49XmFhParARAb_ygss&libraries=places"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+<script type="text/javascript">
+  
+</script>
+
+<script>
+
+google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Month');
+        data.addColumn('number', 'Temperature');
+        data.addColumn({id:'MaximumStart', type:'number', role:'interval'});
+        data.addColumn({id:'MaximumEnd', type:'number', role:'interval'});
+		data.addColumn({id:'MinimumStart', type:'number', role:'interval'});
+        data.addColumn({id:'MinimumEnd', type:'number', role:'interval'});
+
+  
+        data.addRows([
+            ['Jan', 100, 100, 110, 100, 90],
+            ['Feb', 120, 120, 130, 120, 110],
+            ['Mar', 130, 130, 140, 130, 111],
+            ['Apr', 90, 90, 95, 90, 87],
+            ['May', 70, 70, 76, 70, 60],
+            ['Jun', 30, 30, 37, 30, 25],
+            ['Jul', 80, 80, 83, 80, 74],
+            ['Aug', 100, 100, 110, 100, 90]]);
+  
+        // The intervals data as narrow lines (useful for showing raw source data)
+        var options_lines = {
+            title: 'Line intervals, default',
+            curveType: 'function',
+            intervals: { 'style':'area' },
+			interval: {
+					  'MaximumStart': {'color':'Red'},
+					  'MinimumStart': {'color':'Blue'}},
+            legend: 'none'
+        };
+
+
+
+		var chart_lines = new google.visualization.LineChart(document.getElementById('chart_lines'));
+        chart_lines.draw(data, options_lines);
+       
+      }
+</script>
+</head>
+<body onload="initialize()">
+
+
+ 	<!-- CONTENT -->
+    <div id="content">
+
+		<div id="weather-container">
+			 <div id="chart_lines" style="height:350px; width:800px; display:inline-block; overflow:hidden; margin:0 auto;"></div>
+		 	
+		 
+		</div>
+	</div>
+
+
+
+</body>
+</html>

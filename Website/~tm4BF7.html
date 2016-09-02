@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place searches</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="stylesheets/style.css">
+    <script>
+    
+	var map;
+    var infowindow = new google.maps.InfoWindow();
+	var places = [];
+	var request1 = {
+		location: {Lat:-33.867, Lng:151.195},
+        radius: 500,
+        type: ['store']
+	}
+
+	function placesRequest(title, latlng, radius, types, icon){
+	    var request = {
+	  	    location: latlng,
+			radius: radius,
+			types: types
+		};
+	}
+	
+	//var callPlaces = new google.maps.places.PlacesService(map);
+		//callPlaces.search(request, function(results, status) {
+			//Chekcs to see if Google returns an "OK" status
+			//if (status == google.maps.places.PlacesServiceStatus.OK){
+			    //loop through each of the places returned and maps it
+			   	//for (var i = 0; i < results.length; i++) {
+            		//createMarker(results[i]);
+          	   	//}
+			//}
+        //}
+	
+	//This draws the map with its details and options
+    function initMap() {
+	
+        var latlng = new google.maps.LatLng(-33.867, 151.195);
+		
+		var myOptions = {
+			zoom: 15,
+			center: latlng,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+		
+        map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+        var callPlaces = new google.maps.places.PlacesService(map);
+        callPlaces.nearbySearch(request1, callback);
+    }
+
+        function callback(results, status) {
+        	if (status == google.maps.places.PlacesServiceStatus.OK) {
+          	    for (var i = 0; i < results.length; i++) {
+            		createMarker(results[i]);
+          		}
+        	}
+    	}
+
+    function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+        	map: map,
+        	position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+      	    infowindow.setContent(place.name);
+          	infowindow.open(map, this);
+        });
+    }
+    </script>
+  </head>
+  <body ccID="2193">
+    <div ccID="2205" id="map_canvas"></div>
+    <script ccID="2238" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGUfCtzq6ScbQJA49XmFhParARAb_ygss&libraries=places&callback=initMap" async defer></script>
+	<div ccID="2394" id="layers"></div>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>House Hunter | Find Your Dream Home</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="HouseHunter | Excel Solutions, Macros, Automation, Reporting and Charting" />
+<meta name="keywords" content="Real Estate, Home, Mortgage, Buy, Rent, Ontario, House, Houses, Apartment, Condo" />
+<meta name="author" content="Austrada" />
+<!-- This is needed for IE -->
+<link rel="shortcut icon" href="images/HHWebTabIcon.ico" type="image/ico"  />
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/style.css">
+<script async defer src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGUfCtzq6ScbQJA49XmFhParARAb_ygss&libraries=places"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+<script src="javascripts/googlemap.js"></script>
+<script src="javascripts/charts.js"></script>
+
+<!--jqueries-->
+
+<script> <!--Script to Show/Hide each section-->
+$(document).ready(function(){
+	$(".area_stats").click(function(){
+    	$("#chart-container, .area_title").slideToggle();
+	});
+	$(".weather_stats").click(function(){
+    	$("#weather-container, .weather_title").slideToggle();
+	});
+		$(".school_stats").click(function(){
+    	$("#school-container, .school_title").slideToggle();
+	});
+});
+
+
+</script>
+
+</head>
+
+<body onload="initialize()">
+
+    <!-- HEADER -->
+    <ul class="top-nav">
+        <!--<li><a href="#Buy">Buy</a></li>
+        <li><a href="#Rent">Rent</a></li>
+        <li><a href="#Rent">Vacation Rental</a></li>-->
+		<li><a href="Index.html">Home</a></li>
+        <li><a href="#Research">Research</a></li>
+        <li><a href="#News">News</a></li>
+        <li><a href="#Ideas">Ideas</a></li>
+    </ul>
+
+ 	<!-- CONTENT -->
+    <div id="content">
+        <div id="bgimagearea">
+			 <h>GUELPH</h>
+			 <p>The Royal City</p>
+			 
+		</div>
+		<div id="section-divider">
+			 <br><br>
+			 <h1>Community Description</h1>
+		</div>
+		<div id="cityblurb">
+			 <h1>Guelph</h1>
+			 <p1>Guelph is one of Canada’s fastest growing cities. Only 45 minutes from Toronto, we maintain low unemployment, a low crime rate, and a high standard of living. Guelph has just the right balance of city life and small-town friendliness.</p1>
+		</div>
+		<div id="section-divider">
+			 <br><br>
+			 <h1>Surrounding Points of Interest</h1>
+		</div>
+		<br>
+		<div id="map_canvas"></div>
+		<div id="cb-container">
+			 <p1>Select Points of Interest to Show</p1><br><br>
+			 <div id="cb-groupcontainers">
+			 	  <input id="Banks_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Banks'])">Banks<br>
+			 	  <input id="Schools_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Schools'])">Schools<br>  
+			 </div>
+			 <div id="cb-groupcontainers">
+				  <input id="Parks_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Parks'])">Parks<br>
+			 	  <input id="Restaurants_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Restaurants'])">Restaurants<br>
+			 </div>
+			 <div id="cb-groupcontainers">  
+				  <input id="Hospitals_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Hospitals'])">Hospitals<br>
+			 	  <input id="Churches_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Churchs'])">Churches<br>
+			 </div>
+			 <div id="cb-groupcontainers">
+				  <input id="Clubs_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Clubs'])">Clubs<br>
+			 	  <input id="Libraries_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Libraries'])">Libraries<br>
+			 </div>
+		</div>
+		<div id="section-divider" class="area_stats">
+			 <br><br>
+			 <h1 class="area_title">Area Statistics <i class="fa fa-angle-up" style="font-size:32px"></i></h1>
+			 <h1 class="area_title" style="display:none">Area Statistics <i class="fa fa-angle-down" style="font-size:32px"></i></h1>
+		</div>
+		<div id="chart-container">
+			 <div id="chart-individual">
+			 	  <h1>Area Age Groupings</h1>
+			 	  <div id="chart_donut_AreaAge_city" style="display:inline-block; overflow:hidden; margin:0 auto;"></div>
+				  <div id="chart_donut_AreaAge_area" style="display:inline-block; overflow:hidden; margin:0 auto;"></div>
+			 </div>
+			 <div id="chart-individual">
+			 	  <h1>Area Age Groupings</h1>
+			 	  <div id="chart_donut_FamilyType_city" style="display:inline-block; overflow:hidden; margin:0 auto;"></div> 
+				  <div id="chart_donut_FamilyType_area" style="display:inline-block; overflow:hidden; margin:0 auto;"></div> 
+			 </div>
+			 <div id="chart-individual">
+			 	  <h1>Area Age Groupings</h1>
+			 	  <div id="chart_donut_DwellingType_city" style="display:inline-block; overflow:hidden; margin:0 auto;"></div>
+				  <div id="chart_donut_DwellingType_area" style="display:inline-block; overflow:hidden; margin:0 auto;"></div>
+			 </div>
+		</div>
+		<div id="section-divider" class="weather_stats">
+			 <br><br>
+			 <h1 class="weather_title">Local Weather <i class="fa fa-angle-up" style="font-size:32px"></i></h1>
+			 <h1 class="weather_title" style="display:none">Local Weather <i class="fa fa-angle-down" style="font-size:32px"></i></h1>
+		</div>
+		<div id="weather-container">
+			 <div id="chart_line_Weather" style="height:250px; width:600px; display:inline-block; overflow:hidden; margin:0 auto;"></div>
+		 	<div id="chart_column_AveRainSnow" style="height:250px; width:600px; display:inline-block; overflow:hidden; margin:0 auto;"></div>
+		</div>
+		<div id="section-divider" class="school_stats">
+			 <br><br>
+			 <h1 class="school_title">Local Schools <i class="fa fa-angle-up" style="font-size:32px"></i></h1>
+			 <h1 class="school_title" style="display:none">Local Schools <i class="fa fa-angle-down" style="font-size:32px"></i></h1>
+			 
+		</div>
+		<br>
+	</div>
+
+	  <!-- FOOTER -->
+
+      <ul class="bottom-nav">
+	  	<li><img src="Images/HH Logo with motto.png" width="200" height="35" alt="" title="" /></li>
+        <li><a href="#Contact">Contact</a></li>
+        <li><a href="#About">About Us</a></li>
+        <li><a href="#Careers">Careers</a></li>
+      </ul>
+
+</body>
+</html>

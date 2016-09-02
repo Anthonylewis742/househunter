@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="stylesheets/style.css">
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript">
+
+//declare map
+var map;
+
+//declare layers
+var uclaCircle
+
+//toggle single layers on/off
+function toggleLayer(layer, id) {
+  if ($('#' + id).prop('checked')) {
+    layer.setMap(map);
+  } else {
+    layer.setMap(null);
+  }
+}
+
+//Function that initializes and draws the google map
+function initialize() {
+    
+	//sets a variable for the map centre
+	var latlng = new google.maps.LatLng(34.0194543, -118.4911912);
+    
+	//Set a variable for the map options
+  var myOptions = {
+    zoom: 12,
+    center: latlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+    
+	//This draws the map and assigns the centre and options
+  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		
+  //draw circle example 
+  var bufferOptions = {
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#FF0000",
+    fillOpacity: 0.35,
+    map: map,
+    center: new google.maps.LatLng(34.0194543, -118.4911912),
+    radius: 2000
+  };
+  uclaCircle = new google.maps.Circle(bufferOptions);
+  
+  initialize()
+}
+
+
+  
+</script>
+</head>
+<body ccID="1410" onload="initialize()">
+<script ccID="1440" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<div ccID="1542" id="map_canvas"></div>
+<input ccID="1571" id="uclaCircle_checkbox" type="checkbox" checked="checked" onClick="toggleLayer(uclaCircle,'uclaCircle_checkbox')" /> UCLA 2km buffer
+<br ccID="1713">
+</body>
+</html>
