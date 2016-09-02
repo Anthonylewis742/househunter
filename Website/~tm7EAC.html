@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>House Hunter | Find Your Dream Home</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="HouseHunter | Excel Solutions, Macros, Automation, Reporting and Charting" />
+<meta name="keywords" content="Real Estate, Home, Mortgage, Buy, Rent, Ontario, House, Houses, Apartment, Condo" />
+<meta name="author" content="Austrada" />
+<!-- This is needed for IE -->
+<link rel="shortcut icon" href="images/HHWebTabIcon.ico" type="image/ico"  />
+<link rel="stylesheet" href="stylesheets/style.css">
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGUfCtzq6ScbQJA49XmFhParARAb_ygss&libraries=places"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+<script type="text/javascript">
+
+//declare map variable
+var map;
+
+//declare place array variable
+var places = [];
+
+//infowindow
+var infowindow = new google.maps.InfoWindow();
+
+//Request places from Google
+function placesRequest(title, latlng, radius, types, icon) {
+  //Parameters for our places request
+  var request = {
+    location: latlng,
+    radius: radius,
+    types: types
+  };
+
+//Make the service call to google
+  var callPlaces = new google.maps.places.PlacesService(map);
+  callPlaces.nearbySearch(request, function(results, status) {
+    //check to see if Google returns an "OK" status
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      //add checkbox to the table of contents
+      //$('#cb-container').append('<input id="" type="checkbox" checked="checked" onClick="toggleArrayLayer(places[\'' + title + '\'])">' + title + '<br>');
+      //loop through each of the places returned and map it
+      $.each(results, function(i, place) {
+        var placeLoc = place.geometry.location;
+        var thisplace = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location,
+          icon: icon,
+          title: place.name
+        });
+
+        //Check to see if the array for this place type exists
+        if (typeof places[title] == "undefined") places[title] = [];
+
+        //Add this place to the array
+        places[title].push(thisplace);
+
+        //add an infowindow
+        google.maps.event.addListener(thisplace, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+		
+		//hides array layer initially
+		//arraylayer[i].setMap(null);
+        //arraylayer[i].visible = false;
+		
+      });
+    };
+  });
+}
+
+//toggle array layers on/off
+toggleArrayLayer = function(arraylayer) 
+{
+    if (arraylayer) {
+        for (i in arraylayer) {                 
+            if (arraylayer[i].getVisible() == true)
+            {
+                arraylayer[i].setMap(null);
+                arraylayer[i].visible = false;
+            }
+            else
+            {
+                arraylayer[i].setMap(map);
+                arraylayer[i].visible = true;
+            }
+        }
+    }
+}
+
+//Function that initializes and draws the google map
+function initialize() {
+    
+	//sets a variable for the map centre
+	var latlng = new google.maps.LatLng(43.549222,-80.250572);
+    
+	//Set a variable for the map options
+	var myOptions = {
+      zoom: 16,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    
+	//This draws the map and assigns the centre and options
+	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	
+	//Map Schools
+	placesRequest('Banks', latlng, 1000, ['bank'], 'images/mapicons/bank.png');
+	placesRequest('Schools',latlng,1000,['school'],'images/mapicons/school.png');
+	placesRequest('Parks',latlng,1000,['park'],'images/mapicons/grass.png');
+	placesRequest('Restaurants',latlng,1000,['restaurant'],'images/mapicons/restaurant.png');
+	placesRequest('Hospitals',latlng,1000,['hospital'],'images/mapicons/hospital-building.png');
+	placesRequest('Churchs',latlng,1000,['church'],'images/mapicons/church-2.png');
+	placesRequest('Clubs',latlng,1000,['night_club'],'images/mapicons/bar_coktail.png');
+	placesRequest('Libraries',latlng,1000,['library'],'images/mapicons/library.png');
+	
+}
+
+  
+</script>
+
+<script>
+
+google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data_AreaAge = google.visualization.arrayToDataTable([
+          ['Age', 'Age Group'],
+          ['<5 Years', 2175],
+          ['5-9 Years', 2145],
+          ['10-19 Years', 4890],
+		  ['20-29 Years', 6379],
+		  ['30-39 Years', 5260],
+		  ['40-50 Years', 6215],
+		  ['50-60 Years', 6315],
+		  ['60> Years', 8910]
+        ]);
+		var data_FamilyType = google.visualization.arrayToDataTable([
+          ['Family', 'Relationship Group'],
+          ['Divorced', 2515],
+          ['Married', 16050],
+          ['Seperated', 1195],
+		  ['Single', 10110],
+		  ['Widowed', 2100],
+		  ['Common Law', 3700],
+        ]);
+		var data_DwellingType = google.visualization.arrayToDataTable([
+          ['Dwellings', 'Housing Types'],
+          ['Apartment', 7735],
+          ['Town Home', 1655],
+          ['Semi-Detached', 655],
+		  ['Detached', 7750],
+		  ['Mobile Home', 315],
+		  ['Other', 6140]
+        ]);
+		var data_Weather = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options_AreaAge = {
+          title: "Area Age Groups",
+		  titleTextStyle: { fontSize: 25, bold:'yes'},
+		  pieHole: 0.5,
+          pieSliceTextStyle: {color: 'black'},
+          pieSliceText: '%',
+		  height:500,
+		  width:500,
+		  chartArea: {left:50, width:380, top:60}
+        };
+		var options_FamilyType = {
+          title: "Family Type",
+		  titleTextStyle: { fontSize: 25, bold:'yes'},
+		  pieHole: 0.5,
+          pieSliceTextStyle: {color: 'black'},
+          pieSliceText: '%',
+		  height:500,
+		  width:500,
+		  chartArea: {left:50, width:380, top:60}
+        };
+		var options_DwellingType = {
+          title: "Dwelling Type",
+		  titleTextStyle: { fontSize: 25, bold:'yes'},
+		  pieHole: 0.5,
+          pieSliceTextStyle: {color: 'black'},
+          pieSliceText: '%',
+		  height:500,
+		  width:500,
+		  chartArea: {left:50, width:380, top:60}
+        };
+		var options_Weather = {
+          curveType: 'function',
+          legend: { position: 'bottom' },
+        };
+
+
+        var chart_AreaAge = new google.visualization.PieChart(document.getElementById('donut_AreaAge'));
+        chart_AreaAge.draw(data_AreaAge, options_AreaAge);
+		var chart_FamilyType = new google.visualization.PieChart(document.getElementById('donut_FamilyType'));
+        chart_FamilyType.draw(data_FamilyType, options_FamilyType);
+		var chart_DwellingType = new google.visualization.PieChart(document.getElementById('donut_DwellingType'));
+        chart_DwellingType.draw(data_DwellingType, options_DwellingType);
+		var chart_Weather = new google.visualization.LineChart(document.getElementById('line_Weather'));
+		chart_Weather.draw(data_Weather, options_Weather);
+      }
+</script>
+</head>
+<body ccID="7690" onload="initialize()">
+
+    <!-- HEADER -->
+    <ul ccID="7747" class="top-nav">
+        <li ccID="7777"><a ccID="7781" href="#Buy">Buy</a></li>
+        <li ccID="7818"><a ccID="7822" href="#Rent">Rent</a></li>
+        <li ccID="7861"><a ccID="7865" href="#Rent">Vacation Rental</a></li>
+        <li ccID="7915"><a ccID="7919" href="#Research">Research</a></li>
+        <li ccID="7966"><a ccID="7970" href="#News">News</a></li>
+        <li ccID="8009"><a ccID="8013" href="#Ideas">Ideas</a></li>
+    </ul>
+
+ 	<!-- CONTENT -->
+    <div ccID="8083" id="content">
+        <div ccID="8111" id="bgimagearea">
+			 <h ccID="8139">GUELPH</h>
+			 <p ccID="8158">The Royal City</p>
+		</div>
+		<div ccID="8193" id="section-divider">
+			 <br ccID="8225"><br ccID="8229">
+			 <h1 ccID="8239">Community Description</h1>
+		</div>
+		<div ccID="8283" id="cityblurb">
+			 <h1 ccID="8309">Guelph</h1>
+			 <p1 ccID="8330">Guelph is one of Canada’s fastest growing cities. Only 45 minutes from Toronto, we maintain low unemployment, a low crime rate, and a high standard of living. Guelph has just the right balance of city life and small-town friendliness.</p1>
+		</div>
+		<div ccID="8589" id="section-divider">
+			 <br ccID="8621"><br ccID="8625">
+			 <h1 ccID="8635">Surrounding Points of Interest</h1>
+		</div>
+		<div ccID="8688" id="map_canvas"></div>
+		<div ccID="8719" id="cb-container">
+			 <p1 ccID="8748">Select Points of Interest to Show</p1><br ccID="8790"><br ccID="8794">
+			 <div ccID="8804" id="cb-groupcontainers">
+			 	  <input ccID="8842" id="Banks_Checkbox" type="checkbox" onClick="toggleArrayLayer(places['Banks'])">Banks<br ccID="8934">
+			 	  <input ccID="8947" id="Schools_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Schools'])">Schools<br ccID="9063">  
+			 </div>
+			 <div ccID="9087" id="cb-groupcontainers">
+				  <input ccID="9124" id="Parks_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Parks'])">Parks<br ccID="9234">
+			 	  <input ccID="9247" id="Restaurants_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Restaurants'])">Restaurants<br ccID="9375">
+			 </div>
+			 <div ccID="9397" id="cb-groupcontainers">  
+				  <input ccID="9436" id="Hospitals_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Hospitals'])">Hospitals<br ccID="9558">
+			 	  <input ccID="9571" id="Churches_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Churchs'])">Churches<br ccID="9689">
+			 </div>
+			 <div ccID="9711" id="cb-groupcontainers">
+				  <input ccID="9748" id="Clubs_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Clubs'])">Clubs<br ccID="9858">
+			 	  <input ccID="9871" id="Libraries_Checkbox" type="checkbox" checked="checked" onClick="toggleArrayLayer(places['Libraries'])">Libraries<br ccID="9993">
+			 </div>
+		</div>
+				<div ccID="10025" id="section-divider">
+			 <br ccID="10057"><br ccID="10061">
+			 <h1 ccID="10071">Area Statistics</h1>
+		</div>
+		<div ccID="10109" id="chart-container">
+			 <div ccID="10141" id="donut_AreaAge" style="height:360px; width:400px; display:inline-block; overflow:hidden; margin:0 auto;"></div>
+			 <div ccID="10266" id="donut_FamilyType" style="height:360px; width:400px; display:inline-block; overflow:hidden; margin:0 auto;"></div> 
+			 <div ccID="10395" id="donut_DwellingType" style="height:360px; width:400px; display:inline-block; overflow:hidden; margin:0 auto;"></div>
+		</div>
+		<div ccID="10533" id="section-divider">
+			 <br ccID="10565"><br ccID="10569">
+			 <h1 ccID="10579">Local Weather</h1>
+		</div>
+		<div ccID="10615" id="weather-container">
+			 <div ccID="10649" id="line_Weather" style="height:300px; width:700px; display:inline-block; overflow:hidden; margin:0 auto;"></div>
+		 	 </div>		 
+		</div>
+	</div>
+
+	  <!-- FOOTER -->
+
+      <ul ccID="10834" class="bottom-nav">
+	  	<li ccID="10863"><img ccID="10867" src="Images/HH Logo with motto.png" width="200" height="35" alt="" title="" /></li>
+        <li ccID="10965"><a ccID="10969" href="#Contact">Contact</a></li>
+        <li ccID="11014"><a ccID="11018" href="#About">About Us</a></li>
+        <li ccID="11062"><a ccID="11066" href="#Careers">Careers</a></li>
+      </ul>
+
+</body>
+</html>
